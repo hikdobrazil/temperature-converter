@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        /* This CSS styles the application to match the required layout. */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't alter the width */
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultArea {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333; /* Color changed to match example */
+        }
+        #errorArea {
+            margin-top: 15px;
+            font-size: 1em;
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Temperature Converter</h1>
+
+        <div class="input-group">
+            <input type="text" id="tempInput" placeholder="Enter temperature">
+            <select id="unitSelect">
+                <option value="c-to-f">Celsius to Fahrenheit</option>
+                <option value="f-to-c">Fahrenheit to Celsius</option>
+            </select>
+        </div>
+
+        <button id="convertBtn">Convert</button>
+
+        <p id="resultArea"></p>
+        <p id="errorArea"></p>
+    </div>
+
+    <script>
+        // --- JavaScript Functionality ---
+
+        // Get references to the HTML elements to interact with them.
+        const tempInput = document.getElementById('tempInput');
+        const unitSelect = document.getElementById('unitSelect');
+        const convertBtn = document.getElementById('convertBtn');
+        const resultArea = document.getElementById('resultArea');
+        const errorArea = document.getElementById('errorArea');
+
+        // Add a 'click' event listener to the button to trigger the conversion.
+        convertBtn.addEventListener('click', convertTemperature);
+
+        /**
+         * Converts Celsius to Fahrenheit using the standard formula.
+         * F = (C * 9/5) + 32
+         */
+        function celsiusToFahrenheit(celsius) {
+            return celsius * (9 / 5) + 32;
+        }
+
+        /**
+         * Converts Fahrenheit to Celsius using the standard formula.
+         * C = (F - 32) * 5/9
+         */
+        function fahrenheitToCelsius(fahrenheit) {
+            return (fahrenheit - 32) * (5 / 9);
+        }
+
+        // Main function to orchestrate the temperature conversion.
+        function convertTemperature() {
+            // Clear previous output before a new conversion.
+            resultArea.textContent = '';
+            errorArea.textContent = '';
+
+            const temperatureValue = tempInput.value;
+            const selectedUnit = unitSelect.value;
+
+            // Use a control structure to validate the input.
+            if (temperatureValue === '' || isNaN(temperatureValue)) {
+                errorArea.textContent = 'Error: Please enter a valid number.';
+                return; // Stop the function if input is not a number.
+            }
+
+            const temperature = parseFloat(temperatureValue);
+            let result;
+
+            // Use a control structure to decide which conversion to perform.
+            if (selectedUnit === 'c-to-f') {
+                result = celsiusToFahrenheit(temperature);
+                resultArea.textContent = `${temperature}°C is ${result.toFixed(2)}°F`;
+            } else if (selectedUnit === 'f-to-c') {
+                result = fahrenheitToCelsius(temperature);
+                resultArea.textContent = `${temperature}°F is ${result.toFixed(2)}°C`;
+            }
+        }
+    </script>
+</body>
+</html>
